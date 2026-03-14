@@ -1,0 +1,20 @@
+@startuml assign-sequence
+actor User
+participant UI
+participant EmployeeService
+participant EmployeeRepository as EmpRepo
+participant PositionRepository as PosRepo
+participant Employee
+
+User -> UI: Assign employee E to position P
+UI -> EmployeeService: assignEmployeeToPosition(empNo, posCode)
+EmployeeService -> EmpRepo: findByEmployeeNumber(empNo)
+EmpRepo --> EmployeeService: Employee
+EmployeeService -> PosRepo: findByPositionCode(posCode)
+PosRepo --> EmployeeService: Position
+EmployeeService -> EmployeeService: validate(E has no currentPosition,\n P.status == OPEN)
+EmployeeService -> Employee: assignTo(P)
+EmployeeService -> PosRepo: save(P)
+EmployeeService -> EmpRepo: save(E)
+EmployeeService --> UI: success
+@enduml
