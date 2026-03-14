@@ -1,0 +1,75 @@
+@startuml employee-job-domain
+skinparam classAttributeIconSize 0
+
+package "Employee Domain" {
+  class Employee {
+    - employeeNumber: String
+    - name: String
+    - employmentType: EmploymentType
+    - nationality: String
+    - contact: ContactDetails
+    - address: Address
+    - identities: List<Identity>
+    - currentPosition: Position
+    --
+    + addIdentity(type: String, value: String)
+    + assignTo(position: Position)
+    + unassign()
+  }
+
+  class ContactDetails {
+    - cellPhone: String
+    - email: String
+    - homePhone: String
+  }
+
+  class Address {
+    - streetAddress: String
+    - postalAddress: String
+  }
+
+  class Identity {
+    - type: String
+    - value: String
+  }
+
+  enum EmploymentType {
+    PERMANENT
+    CONTRACT
+  }
+}
+
+package "Job Domain" {
+  class Job {
+    - id: UUID
+    - title: String
+    - positions: List<Position>
+    --
+    + addPosition(pos: Position)
+  }
+
+  class Position {
+    - positionCode: String
+    - status: PositionStatus
+    - job: Job
+    - occupant: Employee
+    --
+    + markOpen()
+    + markClosed()
+    + isOpen(): boolean
+  }
+
+  enum PositionStatus {
+    OPEN
+    CLOSED
+  }
+}
+
+Employee "1" o-- "1" ContactDetails
+Employee "1" o-- "1" Address
+Employee "1" o-- "0..*" Identity
+Job "1" o-- "0..*" Position
+Position "0..1" --> "1" Employee : occupant
+Position ..> PositionStatus
+Employee ..> EmploymentType
+@enduml

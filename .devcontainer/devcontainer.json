@@ -1,0 +1,26 @@
+{
+  "name": "Java Maven + PlantUML",
+  "image": "mcr.microsoft.com/devcontainers/java:1-21-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "jebbs.plantuml",
+        "redhat.vscode-xml",
+        "vscjava.vscode-maven",
+        "eamodio.gitlens"
+      ],
+      "settings": {
+        "java.configuration.updateBuildConfiguration": "interactive",
+       "plantuml.render": "PlantUMLServer",
+        "plantuml.server": "https://www.plantuml.com/plantuml"
+      }
+    }
+  },
+  "remoteUser": "vscode",
+  "postCreateCommand": "mvn -v"
+}
